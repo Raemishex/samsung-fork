@@ -1,0 +1,315 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Samsung CSS Dəyişənləri */
+:root {
+  --samsung-blue: #1428A0;
+  --samsung-blue-dark: #0d1f7a;
+  --samsung-blue-hover: #1c35c8;
+  --samsung-black: #000000;
+  --samsung-white: #ffffff;
+  --samsung-gray-light: #f4f4f4;
+  --samsung-gray-mid: #e5e5e5;
+  --samsung-text-dark: #1d1d1d;
+  --samsung-text-gray: #535353;
+  --header-height: 92px;
+}
+
+/* ====== GNB (Global Navigation Bar) ====== */
+
+/* Yuxarı utility bar — Support, For Business */
+.gnb-utility-bar,
+.gnb-main-bar {
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.header-transparent .gnb-utility-bar,
+.header-transparent .gnb-main-bar {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.header-solid .gnb-utility-bar,
+.header-solid .gnb-main-bar {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Nav linklərin hover — alt xətt */
+.gnb-nav-link {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.gnb-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 1.5px;
+  background: #ffffff;
+  transition: width 0.25s ease;
+}
+
+.gnb-nav-link:hover::after,
+.gnb-nav-link:hover::after {
+  width: 100%;
+}
+
+/* MegaMenu Animation */
+@keyframes fadeInDownMega {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-fadeInDownMega {
+  animation: fadeInDownMega 0.3s ease-out forwards;
+}
+
+/* Search düyməsi */
+.gnb-search-btn {
+  cursor: pointer;
+  border: none;
+}
+
+/* Global Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', 'SamsungOne', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--samsung-text-dark);
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Samsung Tipografiyası */
+.samsung-heading {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.samsung-subtext {
+  font-weight: 400;
+  color: var(--samsung-text-gray);
+  line-height: 1.6;
+}
+
+/* Skeleton Loader */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Parallax konteyner */
+.parallax-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.parallax-img {
+  transform: translateY(calc(var(--scroll-y, 0) * 0.3px));
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* Samsung Düymə Stillər */
+.btn-samsung-primary {
+  @apply inline-flex items-center justify-center px-6 py-3 bg-[#1428A0] text-white font-semibold text-sm rounded-full transition-all duration-300;
+}
+
+.btn-samsung-primary:hover {
+  @apply bg-[#0d1f7a] scale-105 shadow-lg;
+}
+
+.btn-samsung-outline {
+  @apply inline-flex items-center justify-center px-6 py-3 border-2 border-[#1428A0] text-[#1428A0] font-semibold text-sm rounded-full transition-all duration-300;
+}
+
+.btn-samsung-outline:hover {
+  @apply bg-[#1428A0] text-white scale-105;
+}
+
+.btn-samsung-dark {
+  @apply inline-flex items-center justify-center px-6 py-3 bg-black text-white font-semibold text-sm rounded-full transition-all duration-300;
+}
+
+.btn-samsung-dark:hover {
+  @apply bg-gray-800 scale-105 shadow-lg;
+}
+
+.btn-samsung-white {
+  @apply inline-flex items-center justify-center px-6 py-3 bg-white text-black font-semibold text-sm rounded-full transition-all duration-300;
+}
+
+.btn-samsung-white:hover {
+  @apply bg-gray-100 scale-105 shadow-lg;
+}
+
+.btn-samsung-white-outline {
+  @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold text-sm rounded-full transition-all duration-300;
+}
+
+.btn-samsung-white-outline:hover {
+  @apply bg-white text-black scale-105;
+}
+
+/* Məhsul kartı hover */
+.product-card {
+  @apply relative overflow-hidden rounded-2xl cursor-pointer transition-all duration-400;
+}
+
+.product-card:hover {
+  @apply shadow-2xl -translate-y-1;
+}
+
+.product-card img {
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Mega Menyu Animasiyası */
+.mega-menu {
+  animation: slideDown 0.25s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Menyu */
+.mobile-menu {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Hero fadein */
+.hero-content {
+  animation: heroFadeIn 0.8s ease-out 0.3s both;
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section animasiya - Intersection Observer ilə */
+.section-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.section-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Header scroll effekti */
+.header-scrolled {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Explore kartları */
+.explore-card {
+  @apply relative overflow-hidden rounded-xl cursor-pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.explore-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.explore-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.3s ease;
+}
+
+.explore-card:hover::after {
+  background: rgba(0,0,0,0.05);
+}
+
+/* Nav link hover */
+.nav-link-hover {
+  position: relative;
+}
+
+.nav-link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--samsung-blue);
+  transition: width 0.25s ease;
+}
+
+.nav-link-hover:hover::after {
+  width: 100%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Focus ring Samsung */
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--samsung-blue);
+  outline-offset: 2px;
+}

@@ -1,0 +1,3 @@
+<svg class="icon" focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><symbol viewBox="0 0 96 96" id="barcode-regular" xmlns="http://www.w3.org/2000/svg"><path d="M89.75 14.5a3.75 3.75 0 013.745 3.55l.005.2v59.5a3.75 3.75 0 01-3.55 3.745l-.2.005H6.25a3.75 3.75 0 01-3.745-3.55l-.005-.2v-59.5a3.75 3.75 0 013.55-3.745l.2-.005h83.5zm-1.25 5h-81v57h81v-57zm-36 8.5v40h-5V28h5zm-9 0v40h-5V28h5zm-21 0v40h-5V28h5zM78 28v40h-4V28h4zm-7 0v40h-4V28h4zm-36 0v40H25V28h10zm30 0v40H55V28h10z"></path></symbol></defs>
+            <use href="#barcode-regular"></use>
+          </svg>

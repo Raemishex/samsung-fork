@@ -1,0 +1,3 @@
+<svg class="icon" focusable="false" xmlns="http://www.w3.org/2000/svg"><defs><symbol viewBox="0 0 96 96" id="cancel-close-regular" xmlns="http://www.w3.org/2000/svg"><path d="M80.233 12.232l3.535 3.536-32.232 32.231 32.23 32.231-3.535 3.536L48 51.535 15.768 83.768l-3.535-3.536 32.232-32.233-32.233-32.231 3.535-3.536L48 44.464z"></path></symbol></defs>
+        <use href="#cancel-close-regular"></use>
+      </svg>

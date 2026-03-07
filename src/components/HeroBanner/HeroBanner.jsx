@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 const HeroBanner = () => {
-  const [loaded, setLoaded] = useState(false)
   const [scrollY, setScrollY] = useState(0)
-  const [activeSlide, setActiveSlide] = useState(0)
-  const videoRef = useRef(null)
+  const activeSlide = 0
 
   const slides = [
     {
@@ -18,10 +16,6 @@ const HeroBanner = () => {
     },
   ]
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 300)
-    return () => clearTimeout(timer)
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
@@ -50,6 +44,7 @@ const HeroBanner = () => {
               loop
               muted
               playsInline
+              poster="/images/us-galaxy-s26-ultra-s948-sm-s948uzvaxaa-550993934.webp"
               className="w-full h-full object-cover"
               style={{
                 transform: `translateY(${i === activeSlide ? scrollY * 0.25 : 0}px)`,

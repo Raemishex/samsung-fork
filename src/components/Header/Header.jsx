@@ -3,6 +3,7 @@ import MegaMenu from './MegaMenu'
 import MobileMenu from './MobileMenu'
 import SearchModal from '../Modals/SearchModal'
 import CartDrawer from '../Cart/CartDrawer'
+import { useCart } from '../../context/CartContext'
 
 const navItems = [
   {
@@ -205,8 +206,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
-  const [searchVal, setSearchVal] = useState('')
+  const { isCartOpen, setIsCartOpen, cartItems } = useCart()
   const menuRef = useRef(null)
   const timeoutRef = useRef(null)
   const lastScrollY = useRef(0)
@@ -331,13 +331,18 @@ const Header = () => {
 
               {/* Cart */}
               <button
-                onClick={() => setCartOpen(true)}
-                className="p-[6px] text-white hover:text-white/80 transition-colors duration-200 relative"
+                onClick={() => setIsCartOpen(true)}
+                className="p-[6px] text-white hover:text-white/80 transition-colors duration-200 relative flex items-center justify-center"
                 aria-label="Cart"
               >
                 <svg width="18" height="18" viewBox="0 0 96 96" fill="currentColor">
                   <path d="M72.817 71.324c5.522 0 10 4.478 10 10 0 5.524-4.477 10-10 10s-10-4.476-10-10c0-5.522 4.477-10 10-10zm-34.946 0c5.523 0 10 4.478 10 10 0 5.524-4.477 10-10 10-5.522 0-10-4.476-10-10 0-5.521 4.479-10 10-10zm34.946 5a5.001 5.001 0 000 10 5 5 0 100-10zm-34.946 0a5 5 0 10.001 9.999 5 5 0 00-.001-9.999zM13.674 5c1.62 0 3.11 1.117 3.6 2.648l.054.186 3.208 12.292h70.035c2.126 0 3.61 1.88 3.194 3.914l-.041.18-9.398 36.292c-.405 1.566-1.849 2.747-3.459 2.835l-.194.006H29.57c-1.619 0-3.11-1.118-3.6-2.65l-.054-.185L12.725 10l-11.614.007-.002-5L13.674 5zm74.65 20.126H21.842l8.674 33.226H79.72l8.604-33.226z" />
                 </svg>
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {cartItems.reduce((total, item) => total + item.quantity, 0)}
+                  </span>
+                )}
               </button>
 
               {/* Account */}
@@ -381,14 +386,13 @@ const Header = () => {
       {/* Mobile Menu */}
       {mobileOpen && (
         <MobileMenu
-        isOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        navItems={navItems}
-      />
+          onClose={() => setMobileOpen(false)}
+          navItems={navItems}
+        />
       )}
       {/* Modals & Drawers */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   )
 }

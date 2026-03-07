@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
 const storyCards = [
@@ -51,9 +52,16 @@ const ExploreSection = () => {
 
   // Pəncərə ölçüsü dəyişəndə də progress-i yoxla
   useEffect(() => {
-    handleScroll()
+    let timeoutId;
+    const initialHandleScroll = () => {
+      timeoutId = setTimeout(handleScroll, 0);
+    };
+    initialHandleScroll();
     window.addEventListener('resize', handleScroll)
-    return () => window.removeEventListener('resize', handleScroll)
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleScroll)
+    }
   }, [])
 
   const scrollLeft = () => {
@@ -88,45 +96,47 @@ const ExploreSection = () => {
         </div>
 
         {/* Carousel / Slider */}
-        <div 
+        <motion.div
           ref={scrollRef}
           onScroll={handleScroll}
           className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-8"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {storyCards.map((card, index) => (
-            <div 
+            <motion.div
               key={card.id} 
               className="snap-start flex-shrink-0 w-[240px] md:w-[280px] lg:w-[312px]"
-              style={{
-                opacity: inView ? 1 : 0,
-                transform: inView ? 'translateX(0)' : 'translateX(30px)',
-                transition: `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`
-              }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: index * 0.1, type: "spring", stiffness: 100, damping: 20 }}
             >
-              <a
+              <motion.a
+                whileHover={{ y: -10, transition: { type: "spring", stiffness: 300 } }}
                 href={card.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group block"
               >
                 {/* Şəkil */}
-                <div className="w-full aspect-square rounded-[24px] overflow-hidden bg-[#f4f4f4] mb-4">
+                <div className="w-full aspect-square rounded-[24px] overflow-hidden bg-[#f4f4f4] mb-4 relative shadow-md group-hover:shadow-2xl transition-shadow duration-300">
                   <img 
                     src={card.img} 
                     alt={card.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
+                  {/* Overlay for depth on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 {/* Altından Yazı */}
-                <h3 className="text-[16px] md:text-[18px] font-bold text-[#1d1d1d]">
+                <h3 className="text-[16px] md:text-[18px] font-bold text-[#1d1d1d] group-hover:text-[#1428a0] transition-colors duration-300 pl-2">
                   {card.title}
                 </h3>
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Navigation - Scroll Indicator & Arrows */}
         <div className="flex items-center justify-center gap-6 mt-4">

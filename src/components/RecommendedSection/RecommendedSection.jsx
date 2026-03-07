@@ -104,9 +104,16 @@ const RecommendedSection = () => {
 
   // Pəncərə ölçüsü dəyişəndə də progress-i yoxla
   useEffect(() => {
-    handleScroll()
+    let timeoutId;
+    const initialHandleScroll = () => {
+      timeoutId = setTimeout(handleScroll, 0);
+    };
+    initialHandleScroll();
     window.addEventListener('resize', handleScroll)
-    return () => window.removeEventListener('resize', handleScroll)
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleScroll)
+    }
   }, [])
 
   const scrollLeft = () => {

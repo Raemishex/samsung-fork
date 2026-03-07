@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Lottie from 'lottie-react'
+import { useCart } from '../../context/CartContext'
 
 const CartDrawer = ({ isOpen, onClose }) => {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: 'Galaxy S26 Ultra, 256GB, Titanium Black',
-      img: '/images/SDSAC-8580-S24Ultra-TitaniumGray-560x560.jpg',
-      price: 1299.99,
-      qty: 1
-    }
-  ])
+  const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart()
 
   const [lottieData, setLottieData] = useState(null)
 
@@ -32,21 +25,18 @@ const CartDrawer = ({ isOpen, onClose }) => {
   }, [])
 
   const increaseQty = (id) => {
-    setItems(items.map(i => i.id === id ? { ...i, qty: i.qty + 1 } : i))
+    updateQuantity(id, 1)
   }
 
   const decreaseQty = (id) => {
-    setItems(items.map(i => {
-      if (i.id === id && i.qty > 1) return { ...i, qty: i.qty - 1 }
-      return i
-    }))
+    updateQuantity(id, -1)
   }
 
   const removeItem = (id) => {
-    setItems(items.filter(i => i.id !== id))
+    removeFromCart(id)
   }
 
-  const subtotal = items.reduce((sum, item) => sum + (item.price * item.qty), 0)
+  const subtotal = getCartTotal()
 
   return (
     <>
@@ -64,7 +54,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-[#1d1d1d]">Your Cart ({items.length})</h2>
+          <h2 className="text-xl font-bold text-[#1d1d1d]">Your Cart ({cartItems.reduce((total, item) => total + item.quantity, 0)})</h2>
           <button 
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -78,7 +68,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-6">
-          {items.length === 0 ? (
+          {cartItems.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center opacity-85">
               <div className="w-48 h-48 mb-2">
                  {lottieData ? <Lottie animationData={lottieData} loop={true} /> : (
@@ -96,7 +86,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
             </div>
           ) : (
             <div className="space-y-6">
-              {items.map(item => (
+              {cartItems.map(item => (
                 <div key={item.id} className="flex gap-4">
                   <div className="w-24 h-24 bg-[#f4f4f4] rounded-xl p-2 flex-shrink-0">
                     <img src={item.img} alt={item.name} className="w-full h-full object-contain mix-blend-multiply" />
@@ -115,10 +105,10 @@ const CartDrawer = ({ isOpen, onClose }) => {
                     <div className="mt-auto flex items-center justify-between">
                       <div className="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1">
                         <button onClick={() => decreaseQty(item.id)} className="text-xl leading-none px-1 hover:text-gray-500">−</button>
-                        <span className="text-sm font-semibold">{item.qty}</span>
+                        <span className="text-sm font-semibold">{item.quantity}</span>
                         <button onClick={() => increaseQty(item.id)} className="text-xl leading-none px-1 hover:text-gray-500">+</button>
                       </div>
-                      <span className="font-bold whitespace-nowrap">${(item.price * item.qty).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                      <span className="font-bold whitespace-nowrap">${(item.price * item.quantity).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                     </div>
                   </div>
                 </div>
@@ -128,7 +118,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer */}
-        {items.length > 0 && (
+        {cartItems.length > 0 && (
           <div className="border-t border-gray-100 p-6 bg-gray-50">
             <div className="flex items-center justify-between mb-4">
               <span className="text-gray-600 font-medium">Subtotal</span>

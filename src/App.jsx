@@ -14,7 +14,6 @@ import SkeletonLoader from './components/SkeletonLoader/SkeletonLoader'
 import LiveWidget from './components/LiveWidget/LiveWidget'
 import Toast from './components/common/Toast'
 import Preloader from './components/common/Preloader'
-import { CustomCursor } from './components/common/CustomCursor'
 
 const App = () => {
   const [loading, setLoading] = useState(true)
@@ -36,9 +35,8 @@ const App = () => {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-x-hidden cursor-none md:cursor-auto">
+    <div className="min-h-screen overflow-x-hidden">
       <Preloader />
-      <CustomCursor />
       {/* Header - həmişə göstər */}
       <Header />
 

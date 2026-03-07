@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
+import { useCart } from '../../context/CartContext'
 
 const QuickViewModal = ({ isOpen, onClose, product }) => {
+  const { addToCart } = useCart()
   // Modal açılanda scroll dayandırmaq
   useEffect(() => {
     if (isOpen) {
@@ -80,7 +82,18 @@ const QuickViewModal = ({ isOpen, onClose, product }) => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-            <button className="flex-1 bg-black text-white px-8 py-4 rounded-full font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+            <button
+              onClick={() => {
+                addToCart({
+                  id: product.id,
+                  name: product.name || product.title || product.label,
+                  price: parseFloat((product.price || '$1299').replace(/[^0-9.-]+/g,"")),
+                  img: product.img
+                });
+                onClose();
+              }}
+              className="flex-1 bg-black text-white px-8 py-4 rounded-full font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="9" cy="21" r="1" />
                 <circle cx="20" cy="21" r="1" />

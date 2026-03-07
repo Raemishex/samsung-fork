@@ -12,6 +12,9 @@ import ExploreSection from './components/ExploreSection/ExploreSection'
 import Footer from './components/Footer/Footer'
 import SkeletonLoader from './components/SkeletonLoader/SkeletonLoader'
 import LiveWidget from './components/LiveWidget/LiveWidget'
+import Toast from './components/common/Toast'
+import Preloader from './components/common/Preloader'
+import { CustomCursor } from './components/common/CustomCursor'
 
 const App = () => {
   const [loading, setLoading] = useState(true)
@@ -22,28 +25,20 @@ const App = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Scroll animasiya dəstəyi
+  // Parallax üçün scroll dəstəyi
   useEffect(() => {
     const handleScroll = () => {
-      // CSS parallax dəyişəni
       document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}`)
-
-      // Intersection Observer əvəzinə manual scroll-animate
-      const elements = document.querySelectorAll('.section-animate')
-      elements.forEach((el) => {
-        const rect = el.getBoundingClientRect()
-        if (rect.top < window.innerHeight * 0.9) {
-          el.classList.add('visible')
-        }
-      })
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // ilk render
+    handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden cursor-none md:cursor-auto">
+      <Preloader />
+      <CustomCursor />
       {/* Header - həmişə göstər */}
       <Header />
 
@@ -88,6 +83,9 @@ const App = () => {
 
       {/* Yuxarı Qayıt Düyməsi */}
       <BackToTop />
+
+      {/* Toast Notification */}
+      <Toast />
     </div>
   )
 }

@@ -48,6 +48,11 @@ const translations = {
       aiSuggest: 'Süni İntellekt Tövsiyələri',
       recent: 'Son axtarışlar',
       popular: 'Populyar axtarışlar'
+    },
+    supportChat: {
+      welcome: 'Salam! Samsung məhsullarınızla bağlı bu gün sizə necə kömək edə bilərik?',
+      busy: 'Müraciətiniz üçün təşəkkür edirik! Dəstək agentlərimiz hazırda məşğuldur. Zəhmət olmasa əlaqə məlumatlarınızı qeyd edin və ya daha sonra yenidən cəhd edin.',
+      placeholder: 'Mesaj yazın...'
     }
   },
   en: {
@@ -96,6 +101,11 @@ const translations = {
       aiSuggest: 'AI Suggested Searches',
       recent: 'Recent Searches',
       popular: 'Popular Searches'
+    },
+    supportChat: {
+      welcome: 'Hi! How can we help you today with your Samsung products?',
+      busy: 'Thank you for reaching out! Our support agents are currently busy. Please leave your contact details or try again later.',
+      placeholder: 'Type a message...'
     }
   },
   ru: {
@@ -144,6 +154,11 @@ const translations = {
       aiSuggest: 'Рекомендации ИИ',
       recent: 'Недавние запросы',
       popular: 'Популярные запросы'
+    },
+    supportChat: {
+      welcome: 'Привет! Чем мы можем помочь вам сегодня с продуктами Samsung?',
+      busy: 'Спасибо за обращение! Наши агенты поддержки сейчас заняты. Пожалуйста, оставьте свои контактные данные или попробуйте позже.',
+      placeholder: 'Введите сообщение...'
     }
   }
 };

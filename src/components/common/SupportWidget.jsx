@@ -16,6 +16,19 @@ const SupportWidget = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
 
+  const botResponses = [
+    "I'm a bot, but honestly, I'm just here for the trade-in credits.",
+    "Did you try turning it off and on again? Classic.",
+    "Beep boop! My circuits are currently tangled in Galaxy wires.",
+    "I would help you, but I'm busy staring at the new 8K TV specs.",
+    "Hold on, let me ask my AI overloads. ...They said 'Maybe'.",
+    "I'm 99% sure whatever you're asking is covered by Samsung Care+.",
+    "You know, an S26 Ultra would make this conversation much smoother.",
+    "I'm processing your request... Wait, error 404: Motivation not found.",
+    "Have you considered just staring blankly at the screen? Works for me.",
+    "My code tells me to say 'I'm busy', but my heart says 'Buy a new phone'."
+  ];
+
   const handleSend = () => {
     if (!inputValue.trim()) return;
 
@@ -24,11 +37,12 @@ const SupportWidget = () => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate bot reply
+    // Simulate funny bot reply
     setTimeout(() => {
+      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
       setMessages(prev => [
         ...prev,
-        { text: t('supportChat', 'busy'), isUser: false }
+        { text: randomResponse, isUser: false }
       ]);
       setIsTyping(false);
     }, 1500);
@@ -41,10 +55,10 @@ const SupportWidget = () => {
   };
 
   return (
-    <div className="fixed bottom-36 md:bottom-24 right-6 z-[105] flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-24 left-6 z-[105] flex flex-col items-start pointer-events-none">
       {/* Tooltip / Label */}
       <div
-        className={`bg-white text-black text-sm font-bold px-4 py-2 rounded-xl shadow-lg mb-2 transition-all duration-300 origin-bottom-right ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
+        className={`bg-white text-black text-sm font-bold px-4 py-2 rounded-xl shadow-lg mb-2 transition-all duration-300 origin-bottom-left ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
       >
         <p>{t('nav', 'support')} / Chat</p>
       </div>
@@ -74,7 +88,7 @@ const SupportWidget = () => {
 
       {/* Fake Chat Window */}
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[300px] h-[400px] bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.2)] flex flex-col overflow-hidden animate-fade-in origin-bottom-right z-[-1] pointer-events-auto">
+        <div className="absolute bottom-20 left-0 w-[300px] h-[400px] bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.2)] flex flex-col overflow-hidden animate-fade-in origin-bottom-left z-[-1] pointer-events-auto">
           <div className="bg-black text-white p-4 flex justify-between items-center">
             <h3 className="font-bold">{t('nav', 'support')} Chat</h3>
             <span className="w-2 h-2 bg-green-500 rounded-full"></span>

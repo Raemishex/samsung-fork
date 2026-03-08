@@ -11,7 +11,6 @@ import RecommendedSection from './components/RecommendedSection/RecommendedSecti
 import ExploreSection from './components/ExploreSection/ExploreSection'
 import Footer from './components/Footer/Footer'
 import SkeletonLoader from './components/SkeletonLoader/SkeletonLoader'
-import BeforeAfterSlider from './components/common/BeforeAfterSlider'
 import LiveWidget from './components/LiveWidget/LiveWidget'
 import Toast from './components/common/Toast'
 import Preloader from './components/common/Preloader'
@@ -61,9 +60,6 @@ const App = () => {
           {/* 3. Category Tabs — məhsul grid */}
           <ProductGrid />
 
-          {/* Before/After Compare Section */}
-          <BeforeAfterSlider />
-
           {/* 4. Vision AI TVs + display grid */}
           <TVSection />
 
@@ -105,11 +101,33 @@ const BackToTop = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const scrollToTopSlowly = () => {
+    const startY = window.scrollY;
+    const duration = 1500; // 1.5 seconds for a slow scroll
+    const startTime = performance.now();
+
+    const animateScroll = (currentTime) => {
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+
+      // Easing function: easeOutCubic
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+      window.scrollTo(0, startY * (1 - easeProgress));
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  };
+
   if (!visible) return null
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={scrollToTopSlowly}
       className="fixed bottom-8 right-6 z-50 bg-[#1428A0] hover:bg-[#0d1f7a] text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl focus:ring-4 focus:ring-black focus:outline-none"
       aria-label="Yuxarı qayıt"
     >

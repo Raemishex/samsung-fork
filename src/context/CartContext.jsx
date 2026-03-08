@@ -17,6 +17,10 @@ export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
+  // Promo code state
+  const [promoCode, setPromoCode] = useState(null);
+  const [discountPercent, setDiscountPercent] = useState(0);
+
   // Save to local storage when cart changes
   useEffect(() => {
     localStorage.setItem('samsung_cart', JSON.stringify(cartItems));
@@ -58,6 +62,35 @@ export const CartProvider = ({ children }) => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
+  const applyPromoCode = (code) => {
+    if (code.toUpperCase() === 'SAMSUNG20') {
+      setPromoCode('SAMSUNG20');
+      setDiscountPercent(20);
+      showToast("Təbriklər! 20% endirim tətbiq edildi.");
+      return true;
+    } else {
+      showToast("Yanlış və ya istifadə olunmuş kod.");
+      return false;
+    }
+  };
+
+  const removePromoCode = () => {
+    setPromoCode(null);
+    setDiscountPercent(0);
+  };
+
+  const getDiscountedTotal = () => {
+    const total = getCartTotal();
+    const discountAmount = (total * discountPercent) / 100;
+    return total - discountAmount;
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+    setPromoCode(null);
+    setDiscountPercent(0);
+  };
+
   const showToast = (message) => {
     setToastMessage(message);
     setTimeout(() => {
@@ -72,6 +105,12 @@ export const CartProvider = ({ children }) => {
       removeFromCart,
       updateQuantity,
       getCartTotal,
+      applyPromoCode,
+      removePromoCode,
+      getDiscountedTotal,
+      promoCode,
+      discountPercent,
+      clearCart,
       isCartOpen,
       setIsCartOpen,
       toastMessage,

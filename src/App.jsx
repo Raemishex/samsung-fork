@@ -11,9 +11,11 @@ import RecommendedSection from './components/RecommendedSection/RecommendedSecti
 import ExploreSection from './components/ExploreSection/ExploreSection'
 import Footer from './components/Footer/Footer'
 import SkeletonLoader from './components/SkeletonLoader/SkeletonLoader'
+import BeforeAfterSlider from './components/common/BeforeAfterSlider'
 import LiveWidget from './components/LiveWidget/LiveWidget'
 import Toast from './components/common/Toast'
 import Preloader from './components/common/Preloader'
+import SupportWidget from './components/common/SupportWidget'
 
 const App = () => {
   const [loading, setLoading] = useState(true)
@@ -59,6 +61,9 @@ const App = () => {
           {/* 3. Category Tabs — məhsul grid */}
           <ProductGrid />
 
+          {/* Before/After Compare Section */}
+          <BeforeAfterSlider />
+
           {/* 4. Vision AI TVs + display grid */}
           <TVSection />
 
@@ -78,6 +83,9 @@ const App = () => {
 
       {/* Live Video Widget */}
       <LiveWidget />
+
+      {/* Support Chat Widget */}
+      <SupportWidget />
 
       {/* Yuxarı Qayıt Düyməsi */}
       <BackToTop />
@@ -102,7 +110,7 @@ const BackToTop = () => {
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      className="fixed bottom-8 right-6 z-50 bg-[#1428A0] hover:bg-[#0d1f7a] text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl"
+      className="fixed bottom-8 right-6 z-50 bg-[#1428A0] hover:bg-[#0d1f7a] text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl focus:ring-4 focus:ring-black focus:outline-none"
       aria-label="Yuxarı qayıt"
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none">

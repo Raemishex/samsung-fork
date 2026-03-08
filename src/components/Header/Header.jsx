@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import MegaMenu from './MegaMenu'
 import MobileMenu from './MobileMenu'
+import StickySubNav from './StickySubNav'
 import SearchModal from '../Modals/SearchModal'
 import CartDrawer from '../Cart/CartDrawer'
 import { useCart } from '../../context/CartContext'
+import { useLanguage } from '../../context/LanguageContext'
 
 const navItems = [
   {
@@ -207,6 +209,7 @@ const Header = () => {
   const [isVisible, setIsVisible] = useState(true)
   const [searchOpen, setSearchOpen] = useState(false)
   const { isCartOpen, setIsCartOpen, cartItems } = useCart()
+  const { language, changeLanguage, t } = useLanguage()
   const menuRef = useRef(null)
   const timeoutRef = useRef(null)
   const lastScrollY = useRef(0)
@@ -254,16 +257,21 @@ const Header = () => {
           scrolled ? 'header-solid' : 'header-transparent'
         } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
       >
-        {/* Yuxarı utility bar — Support, For Business */}
+        {/* Yuxarı utility bar — Language, Support, For Business */}
         <div className="gnb-utility-bar hidden md:block">
           <div className="max-w-[1440px] mx-auto px-6 lg:px-10 flex items-center justify-end h-[40px] gap-5">
+            <div className="flex items-center gap-2 border-r border-white/20 pr-4">
+              <button onClick={() => changeLanguage('az')} className={`text-[12px] font-bold ${language === 'az' ? 'text-white' : 'text-white/60 hover:text-white'}`}>AZ</button>
+              <button onClick={() => changeLanguage('ru')} className={`text-[12px] font-bold ${language === 'ru' ? 'text-white' : 'text-white/60 hover:text-white'}`}>RU</button>
+              <button onClick={() => changeLanguage('en')} className={`text-[12px] font-bold ${language === 'en' ? 'text-white' : 'text-white/60 hover:text-white'}`}>EN</button>
+            </div>
             <a
               href="https://www.samsung.com/us/support/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/90 hover:text-white text-[13px] font-bold tracking-[0.01em] transition-colors duration-200"
             >
-              Support
+              {t('nav', 'support')}
             </a>
             <a
               href="https://www.samsung.com/us/business/"
@@ -271,7 +279,7 @@ const Header = () => {
               rel="noopener noreferrer"
               className="text-white/90 hover:text-white text-[13px] font-bold tracking-[0.01em] transition-colors duration-200 inline-flex items-center gap-[3px]"
             >
-              For Business
+              {t('nav', 'forBusiness')}
               <svg width="11" height="11" viewBox="0 0 96 96" fill="currentColor" className="opacity-80">
                 <path d="M81.436 14.564v54.285h-8V28.221L18.22 83.436l-5.656-5.656L67.78 22.563l-40.629.001v-8z" />
               </svg>
@@ -289,29 +297,33 @@ const Header = () => {
 
             {/* Desktop Nav Linkləri */}
             <nav className="hidden lg:flex items-center gap-0 flex-1" ref={menuRef}>
-              {navItems.map((item) => (
-                <div
-                  key={item.label}
-                  className="group"
-                  onMouseEnter={() => handleMenuEnter(item.label)}
-                  onMouseLeave={handleMenuLeave}
-                >
-                  <button
-                    className={`gnb-nav-link px-[14px] py-[14px] text-[14px] font-bold tracking-[0.01em] transition-colors duration-200 whitespace-nowrap ${
-                      activeMenu === item.label ? 'text-white' : 'text-white/90 hover:text-white'
-                    }`}
+              {navItems.map((item) => {
+                const navKey = item.label.toLowerCase().replace(/ & /g, '').replace(/ /g, '')
+                const translatedLabel = t('nav', navKey) === `nav.${navKey}` ? item.label : t('nav', navKey)
+                return (
+                  <div
+                    key={item.label}
+                    className="group"
+                    onMouseEnter={() => handleMenuEnter(item.label)}
+                    onMouseLeave={handleMenuLeave}
                   >
-                    {item.label}
-                  </button>
-                  {activeMenu === item.label && item.mega && (
-                    <MegaMenu
-                      data={item.mega}
-                      onMouseEnter={() => clearTimeout(timeoutRef.current)}
-                      onMouseLeave={handleMenuLeave}
-                    />
-                  )}
-                </div>
-              ))}
+                    <button
+                      className={`gnb-nav-link px-[14px] py-[14px] text-[14px] font-bold tracking-[0.01em] transition-colors duration-200 whitespace-nowrap ${
+                        activeMenu === item.label ? 'text-white' : 'text-white/90 hover:text-white'
+                      }`}
+                    >
+                      {translatedLabel}
+                    </button>
+                    {activeMenu === item.label && item.mega && (
+                      <MegaMenu
+                        data={item.mega}
+                        onMouseEnter={() => clearTimeout(timeoutRef.current)}
+                        onMouseLeave={handleMenuLeave}
+                      />
+                    )}
+                  </div>
+                )
+              })}
             </nav>
 
             {/* Sağ tərəf — Search, Cart, Account */}
@@ -391,6 +403,9 @@ const Header = () => {
         />
       )}
       {/* Modals & Drawers */}
+      {/* Sticky Sub Nav */}
+      <StickySubNav />
+
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>

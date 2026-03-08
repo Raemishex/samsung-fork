@@ -1,12 +1,86 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 const LiveWidget = () => {
   const [isVisible, setIsVisible] = useState(true)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+
+  const widgetRef = useRef(null)
+  const dragStartRef = useRef({ x: 0, y: 0 })
+  const initialPosRef = useRef({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDragging) return
+
+      const dx = e.clientX - dragStartRef.current.x
+      const dy = e.clientY - dragStartRef.current.y
+
+      setPosition({
+        x: initialPosRef.current.x + dx,
+        y: initialPosRef.current.y + dy
+      })
+    }
+
+    const handleMouseUp = () => {
+      if (isDragging) {
+        setIsDragging(false)
+      }
+    }
+
+    const handleTouchMove = (e) => {
+      if (!isDragging || !e.touches[0]) return
+
+      const dx = e.touches[0].clientX - dragStartRef.current.x
+      const dy = e.touches[0].clientY - dragStartRef.current.y
+
+      // Prevent scrolling while dragging
+      e.preventDefault()
+
+      setPosition({
+        x: initialPosRef.current.x + dx,
+        y: initialPosRef.current.y + dy
+      })
+    }
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      document.addEventListener('touchmove', handleTouchMove, { passive: false })
+      document.addEventListener('touchend', handleMouseUp)
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('touchmove', handleTouchMove)
+      document.removeEventListener('touchend', handleMouseUp)
+    }
+  }, [isDragging])
+
+  const handlePointerDown = (e) => {
+    // Determine pointer coordinates
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY
+
+    dragStartRef.current = { x: clientX, y: clientY }
+    initialPosRef.current = { x: position.x, y: position.y }
+    setIsDragging(true)
+  }
 
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-4 right-4 z-[100] w-[200px] h-[112px] md:w-[240px] md:h-[135px] bg-black rounded-[20px] shadow-2xl overflow-hidden group transition-transform hover:-translate-y-1">
+    <div
+      ref={widgetRef}
+      onMouseDown={handlePointerDown}
+      onTouchStart={handlePointerDown}
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        cursor: isDragging ? 'grabbing' : 'grab'
+      }}
+      className={`fixed bottom-4 right-4 z-[100] w-[200px] h-[112px] md:w-[240px] md:h-[135px] bg-black rounded-[20px] shadow-2xl overflow-hidden group select-none ${!isDragging ? 'transition-transform hover:-translate-y-1' : ''}`}
+    >
       {/* Youtube Video İframe - pointer-events-none ki, üzərində hover animasiyası edə bilək */}
       <iframe
         className="absolute inset-0 w-full h-[140%] -top-[20%] object-cover pointer-events-none"
@@ -53,6 +127,11 @@ const LiveWidget = () => {
         href="https://www.youtube.com/watch?v=Ce0Ki5eCZ7g" 
         target="_blank" 
         rel="noopener noreferrer" 
+        onClick={(e) => {
+          if (isDragging) {
+            e.preventDefault()
+          }
+        }}
         className="absolute inset-0 z-20"
         aria-label="Watch News Live on YouTube"
       ></a>

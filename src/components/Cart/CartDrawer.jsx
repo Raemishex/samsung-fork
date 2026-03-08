@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import Lottie from 'lottie-react'
 import { useCart } from '../../context/CartContext'
+import CheckoutModal from '../Modals/CheckoutModal'
 
 const CartDrawer = ({ isOpen, onClose }) => {
-  const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart()
+  const {
+    cartItems,
+    updateQuantity,
+    removeFromCart,
+    getCartTotal,
+    applyPromoCode,
+    removePromoCode,
+    promoCode,
+    discountPercent,
+    getDiscountedTotal
+  } = useCart()
 
   const [lottieData, setLottieData] = useState(null)
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false)
+  const [promoInput, setPromoInput] = useState('')
 
   // Prevent background scrolling when opened + Fetch Lottie
   useEffect(() => {
@@ -36,7 +49,16 @@ const CartDrawer = ({ isOpen, onClose }) => {
     removeFromCart(id)
   }
 
+  const handleApplyPromo = () => {
+    if (promoInput.trim() !== '') {
+      applyPromoCode(promoInput.trim());
+      setPromoInput('');
+    }
+  }
+
   const subtotal = getCartTotal()
+  const discountAmount = (subtotal * discountPercent) / 100;
+  const total = getDiscountedTotal();
 
   return (
     <>
@@ -119,17 +141,65 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
         {/* Footer */}
         {cartItems.length > 0 && (
-          <div className="border-t border-gray-100 p-6 bg-gray-50">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-gray-600 font-medium">Subtotal</span>
-              <span className="text-xl font-bold">${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+          <div className="border-t border-gray-100 p-6 bg-white shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
+
+            {/* Promo Code Section */}
+            <div className="mb-4">
+              {!promoCode ? (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={promoInput}
+                    onChange={(e) => setPromoInput(e.target.value)}
+                    placeholder="Enter promo code"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-black text-sm uppercase"
+                  />
+                  <button
+                    onClick={handleApplyPromo}
+                    className="bg-gray-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-gray-200 transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+              ) : (
+                <div className="flex justify-between items-center bg-green-50 px-4 py-3 rounded-xl border border-green-100">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span className="text-green-800 font-bold text-sm tracking-wide">{promoCode} APPLIED</span>
+                  </div>
+                  <button onClick={removePromoCode} className="text-sm text-gray-400 hover:text-black underline">Remove</button>
+                </div>
+              )}
             </div>
-            <button className="w-full bg-black text-white font-bold py-4 rounded-full hover:bg-gray-800 transition-colors">
+
+            <div className="space-y-2 mb-4">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600 font-medium">Subtotal</span>
+                <span className="text-lg font-bold">${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+              </div>
+              {discountPercent > 0 && (
+                <div className="flex items-center justify-between text-green-600">
+                  <span className="font-medium">Discount ({discountPercent}%)</span>
+                  <span className="text-lg font-bold">-${discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                </div>
+              )}
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                <span className="text-gray-900 font-bold">Total</span>
+                <span className="text-2xl font-black">${total.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsCheckoutOpen(true)}
+              className="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition-colors shadow-lg active:scale-[0.98] transform"
+            >
               Checkout
             </button>
           </div>
         )}
       </div>
+
+      <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} />
     </>
   )
 }

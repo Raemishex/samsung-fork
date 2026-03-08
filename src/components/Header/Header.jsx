@@ -254,7 +254,7 @@ const Header = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
-          scrolled ? 'header-solid' : 'header-transparent'
+          scrolled ? 'bg-[#1c1d21]/95 backdrop-blur-md border-b border-white/5 shadow-lg' : 'bg-transparent'
         } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
       >
         {/* Yuxarı utility bar — Language, Support, For Business */}
@@ -296,7 +296,7 @@ const Header = () => {
             </a>
 
             {/* Desktop Nav Linkləri */}
-            <nav className="hidden lg:flex items-center gap-0 flex-1" ref={menuRef}>
+            <nav className="hidden lg:flex items-center gap-0 flex-1 ml-4" ref={menuRef}>
               {navItems.map((item) => {
                 const navKey = item.label.toLowerCase().replace(/ & /g, '').replace(/ /g, '')
                 const translatedLabel = t('nav', navKey) === `nav.${navKey}` ? item.label : t('nav', navKey)
@@ -308,8 +308,8 @@ const Header = () => {
                     onMouseLeave={handleMenuLeave}
                   >
                     <button
-                      className={`gnb-nav-link px-[14px] py-[14px] text-[14px] font-bold tracking-[0.01em] transition-colors duration-200 whitespace-nowrap ${
-                        activeMenu === item.label ? 'text-white' : 'text-white/90 hover:text-white'
+                      className={`gnb-nav-link px-[12px] py-[14px] text-[14px] font-bold transition-colors duration-200 whitespace-nowrap ${
+                        activeMenu === item.label ? 'text-white' : 'text-white/90 hover:text-white hover:bg-white/5 rounded-full'
                       }`}
                     >
                       {translatedLabel}

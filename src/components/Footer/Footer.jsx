@@ -325,7 +325,7 @@ const Footer = () => {
         <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Copyright */}
           <p className="text-[13px] text-[#767676] leading-relaxed">
-            Copyright© 1995-2026 SAMSUNG. All Rights Reserved.
+            Copyright© 1995-2024 SAMSUNG. All Rights Reserved.
           </p>
 
           {/* Never miss a thing + Get Shop Samsung App */}

@@ -105,7 +105,7 @@ const LiveWidget = () => {
       {/* Youtube Video İframe - pointer-events-none ki, üzərində hover animasiyası edə bilək */}
       <iframe
         className="absolute inset-0 w-full h-[140%] -top-[20%] object-cover pointer-events-none"
-        src="https://www.youtube.com/embed/Ce0Ki5eCZ7g?autoplay=1&mute=1&controls=0&modestbranding=1&playsinline=1&loop=1&playlist=Ce0Ki5eCZ7g"
+        src="https://www.youtube.com/embed/DopZM8uRD0c?si=PZ_LUiR1Wa8yoht5&autoplay=1&mute=1&loop=1&playlist=DopZM8uRD0c"
         title="Live Stream"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -145,7 +145,7 @@ const LiveWidget = () => {
 
       {/* Divin üstünə basıldıqda youtube-a getməsi üçün bütöv link qatı */}
       <a 
-        href="https://www.youtube.com/watch?v=Ce0Ki5eCZ7g" 
+        href="https://www.youtube.com/watch?v=DopZM8uRD0c" 
         target="_blank" 
         rel="noopener noreferrer" 
         onClick={(e) => {
